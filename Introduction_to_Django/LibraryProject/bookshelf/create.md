@@ -1,1 +1,1 @@
-Create a library
+Book.objects.create", "title", "author", "George Orwell
