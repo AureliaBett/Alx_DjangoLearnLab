@@ -1,1 +1,1 @@
-Retrieves the books in the library
+"Book.objects.get", "1984"i
