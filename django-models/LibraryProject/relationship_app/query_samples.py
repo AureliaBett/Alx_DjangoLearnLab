@@ -17,7 +17,7 @@ from relationship_app.models import Author, Book, Library, Librarian
 author_name = "Jane Smith"
 try:
     author = Author.objects.get(name=author_name)
-    books_by_author = author.books.all()
+    books_by_author = Book.objects.filter(author=author)
     print(f"\n📚 Books by {author_name}:")
     if books_by_author.exists():
         for book in books_by_author:
