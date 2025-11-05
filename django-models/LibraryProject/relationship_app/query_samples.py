@@ -45,7 +45,7 @@ except Library.DoesNotExist:
 
 # --- Query 3: Retrieve the librarian for a specific library ---
 try:
-    librarian = Librarian.objects.get(library__name=library_name)
+    librarian = Librarian.objects.get(library=library)
     print(f"\n👩‍💼 Librarian for {library_name}: {librarian.name}")
 except Librarian.DoesNotExist:
     print(f"\n⚠️ No librarian found for '{library_name}'.")
