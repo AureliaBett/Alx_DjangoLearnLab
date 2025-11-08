@@ -1,3 +1,21 @@
 from django.shortcuts import render
 
+
 # Create your views here.
+from django.views.generic import DetailView
+from .models import Book
+
+
+def book_list(request):
+    books= Book.objects.all()
+    context = {'book_list': books}
+    return(request, 'relationshqp_app/list_books.html.html', context)
+
+class BookDetailView(DetailView):
+    model = Book
+    template_name = 'relationshqp_app/list_books.html.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["books"] = self.object.books.all()
+        return context
