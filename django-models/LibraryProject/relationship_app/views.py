@@ -9,11 +9,11 @@ from .models import Book
 def book_list(request):
     books= Book.objects.all()
     context = {'book_list': books}
-    return(request, 'relationshqp_app/list_books.html.html', context)
+    return(request, 'relationship_app/list_books', context)
 
 class BookDetailView(DetailView):
     model = Book
-    template_name = 'relationshqp_app/list_books.html.html'
+    template_name = 'relationship_app/list_books'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
