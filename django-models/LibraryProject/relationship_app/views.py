@@ -47,13 +47,14 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(template_name = 'relationship_app/login.html'), name='logout'),
 ]
 
+# Admin view
 def is_admin(user):
     return user.is_authenticated and user.profile.role == 'Admin'
 
 
 @user_passes_test(is_admin)
 def admin_view(request):
-    return render(request, 'relationship_app/admin_dashboard.html', {'role': 'Admin'})
+    return render(request, 'relationship_app/admin_view.html', {'role': 'Admin'})
 
 
 # Librarian view
@@ -63,7 +64,7 @@ def is_librarian(user):
 
 @user_passes_test(is_librarian)
 def librarian_view(request):
-    return render(request, 'relationship_app/librarian_dashboard.html', {'role': 'Librarian'})
+    return render(request, 'relationship_app/librarian_view.html', {'role': 'Librarian'})
 
 
 # Member view
@@ -73,4 +74,4 @@ def is_member(user):
 
 @user_passes_test(is_member)
 def member_view(request):
-    return render(request, 'relationship_app/member_dashboard.html', {'role': 'Member'})
+    return render(request, 'relationship_app/member_view.html', {'role': 'Member'})
