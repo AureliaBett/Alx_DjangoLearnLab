@@ -1,11 +1,12 @@
 from django.shortcuts import render
+from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.views import LoginView
 from django.urls import path
 from django.contrib.auth.views import LogoutView
-from django.urls import path
+
 
 # Create your views here.
 from django.views.generic.detail import DetailView
@@ -30,9 +31,14 @@ class LibraryDetailView(DetailView):
 #User Registration
 class RegistrationView(CreateView):
     form_class = UserCreationForm
-    success_url = reverse_lazy('login')
     template_name = 'relationship_app/register.html'
+    success_url = reverse_lazy('login')
 
+    # (Optional) Automatically log in the user after registration
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)  # <-- using the imported login
+        return super().form_valid(form)
 #User Login
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
