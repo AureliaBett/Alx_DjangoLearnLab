@@ -29,16 +29,17 @@ class LibraryDetailView(DetailView):
         return context
 
 #User Registration
-class RegistrationView(CreateView):
-    form_class = UserCreationForm
-    template_name = 'relationship_app/register.html'
-    success_url = reverse_lazy('login')
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # logs in new user automatically
+            return redirect('list_books')
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
 
-    # (Optional) Automatically log in the user after registration
-    def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)  # <-- using the imported login
-        return super().form_valid(form)
 #User Login
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
