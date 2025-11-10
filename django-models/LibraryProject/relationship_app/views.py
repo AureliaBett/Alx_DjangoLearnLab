@@ -11,7 +11,8 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
-from .models import Book, Library
+from .models import Book
+from .models import Library
 
 @login_required
 
