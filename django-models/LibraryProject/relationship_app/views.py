@@ -9,7 +9,8 @@ from django.urls import path
 # Create your views here.
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.decorators import user_passes_test, permission_required
+from django.contrib.auth.decorators import user_passes_test, 
+from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
 from .models import Book
 from .models import Library
