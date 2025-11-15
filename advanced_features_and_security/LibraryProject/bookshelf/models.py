@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-
+from django.contrib.auth.admin import UserAdmin
 # Create your models here.
 class Book(models.Model):
     title =models.CharField(max_length=200)
@@ -31,7 +31,3 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True")
 
         return self.create_user(email, password, **extra_fields)
-class CustomUser(AbstractUser):
-    bio = models.TextField(blank=True)
-    date_of_birth = models.DateField()
-    profile_photo = models.ImageField()
