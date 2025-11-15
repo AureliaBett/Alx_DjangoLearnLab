@@ -14,6 +14,13 @@ SECRET_KEY = 'django-insecure-c78lo@xdp5a%fj2rk$xlrwk!1#^dvw-3&jtk554aw%r9j&49p2
 # SECURITY WARNING: turn off debug mode IN PRODUCTION
 DEBUG = False
 
+
+SECURE_SSL_REDIRECT = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+
+
 # Required when DEBUG=False
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # In real production add your domain name here.
@@ -37,7 +44,7 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 # Force HTTPS redirect (for real deployment)
-SECURE_SSL_REDIRECT = False   # set True when using HTTPS
+SECURE_SSL_REDIRECT = True  # set True when using HTTPS
 
 # Content Security Policy (CSP)
 # You will activate django-csp middleware
