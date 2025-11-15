@@ -1,0 +1,16 @@
+<!-- bookshelf/book_list.html -->
+{% extends "base.html" %}
+{% block content %}
+<form method="get" action="">
+    <input type="search" name="q" value="{{ query|default:'' }}">
+    <button type="submit">Search</button>
+</form>
+
+<ul>
+  {% for book in books %}
+    <li>{{ book.title }} — {{ book.author }} ({{ book.publication_year }})</li>
+  {% empty %}
+    <li>No books found.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

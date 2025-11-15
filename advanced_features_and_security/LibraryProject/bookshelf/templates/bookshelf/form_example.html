@@ -1,0 +1,15 @@
+<!-- form_example.html -->
+<form method="post" enctype="multipart/form-data" action="{% url 'book_create' %}">
+    {% csrf_token %}
+    <!-- Input fields -->
+    <label for="title">Title</label>
+    <input id="title" name="title" required>
+
+    <label for="author">Author</label>
+    <input id="author" name="author">
+
+    <label for="publication_year">Year</label>
+    <input id="publication_year" name="publication_year" type="number">
+
+    <button type="submit">Save</button>
+</form>
