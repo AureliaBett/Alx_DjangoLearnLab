@@ -77,7 +77,3 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 
 
-class CustomUser(AbstractUser):
-    bio = models.TextField(blank=True)
-    date_of_birth = models.DateField()
-    profile_photo = models.ImageField()

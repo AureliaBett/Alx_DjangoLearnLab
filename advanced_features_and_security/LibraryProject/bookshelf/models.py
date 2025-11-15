@@ -31,3 +31,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True")
 
         return self.create_user(email, password, **extra_fields)
+class CustomUser(AbstractUser):
+    bio = models.TextField(blank=True)
+    date_of_birth = models.DateField()
+    profile_photo = models.ImageField()
