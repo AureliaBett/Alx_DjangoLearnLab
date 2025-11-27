@@ -14,13 +14,15 @@ class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]  # Anyone can read, only logged-in users can POST (but ListAPIView is read-only)
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['title', 'author__name']
--
+   
+    
+
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]  # Read-only for public
+
+    
 
 
 class BookCreateView(generics.CreateAPIView):
