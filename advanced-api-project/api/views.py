@@ -4,30 +4,36 @@ from django.shortcuts import render
 
 from rest_framework import generics, permissions, status, filters
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+
 from .models import Book, Author
 from .serializers import BookSerializer
 
+
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer 
-    permission_classes = [permissions.AllowAny]  # Anyone can view
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Anyone can read, only logged-in users can POST (but ListAPIView is read-only)
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'author__name']
-
+-
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer 
-    permission_classes = [permissions.AllowAny]
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Read-only for public
+
 
 class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer 
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]  # Only logged-in users can create
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
+
         return Response({
             "message": "Book successfully created!",
             "book": serializer.data
@@ -36,25 +42,30 @@ class BookCreateView(generics.CreateAPIView):
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]  # Must be logged-in
 
     def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)  
+        partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
+
         return Response({
             "message": "Book successfully updated!",
             "book": serializer.data
         }, status=status.HTTP_200_OK)
 
+
 class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer  
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]  # Must be logged-in
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
+
         return Response({
             "message": "Book successfully deleted!"
         }, status=status.HTTP_204_NO_CONTENT)
