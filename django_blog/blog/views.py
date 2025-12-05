@@ -1,18 +1,28 @@
-from django.shortcuts import render
-from django.urls import path
-# Create your views here.
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from django.contrib.auth.views import LoginView
-from django.contrib.auth.views import LogoutView
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from .forms import RegisterForm
 
 
-class RegisterView(CreateView):
-    form_class = UserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = "registration/register.html"
-urlpatterns = [
-    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(template_name = 'relationship_app/login.html'), name='logout'),
-]
+def register_view(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)     # Auto-login after registration
+            return redirect("profile")
+    else:
+        form = RegisterForm()
+
+    return render(request, "registration/register.html", {"form": form})
+
+
+@login_required
+def profile_view(request):
+    if request.method == "POST":
+        user = request.user
+        user.email = request.POST.get("email")
+        user.save()
+        return redirect("profile")
+
+    return render(request, "profile.html")
