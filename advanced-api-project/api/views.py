@@ -5,7 +5,7 @@ from django.shortcuts import render
 from rest_framework import generics, status, filters
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-from django_filters import rest_framework
+from django_filters import rest_framework 
 from .models import Book, Author
 from .serializers import BookSerializer
 
@@ -14,9 +14,9 @@ class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     filter_backends = [rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['title', 'author', 'publication_year.']
+    filterset_fields = ['title', 'author', ]
     search_fields = ['title', 'author']
-    ordering_fields =['title', 'publication_year']
+    ordering_fields =['title']
     permission_classes = [IsAuthenticatedOrReadOnly]  # Anyone can read, only logged-in users can POST (but ListAPIView is read-only)
    
     
