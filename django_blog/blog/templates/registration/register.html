@@ -1,8 +1,0 @@
-{%block title %}Register{% endblock}
-{% block contennt%}
-<h2> Register Here</h2>
-<form method = "post">
-    {% csrf_token %}{{form}}
-    <button type ="submit">Register</button>
-</form>
-{% end block %}
