@@ -13,6 +13,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Post, Comment
 from .forms import CommentForm
+from django.db.models import Q
 
 def register_view(request):
     if request.method == "POST":
@@ -116,3 +117,19 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         return self.object.post.get_absolute_url()
+
+def post_search(request):
+    query = request.GET.get('q')
+    results = Post.objects.none()
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+    return render(request, 'blog/search_results.html', {'query': query, 'results': results})
+
+
+def posts_by_tag(request, tag_name):
+    results = Post.objects.filter(tags__name__iexact=tag_name)
+    return render(request, 'blog/posts_by_tag.html', {'tag_name': tag_name, 'results': results})
