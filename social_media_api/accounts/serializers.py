@@ -9,8 +9,8 @@ User = get_user_model()
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'bio', 'profile_picture', 'followers', 'following']
-        read_only_fields = ['followers', 'following']
+        fields = ['id', 'username', 'email', 'password', 'bio', 'profile_picture', 'following']
+        read_only_fields = ['following']
         extra_kwargs = {'password': {'write_only': True}}
     
     
@@ -45,4 +45,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'email', 'bio', 'profile_picture', 'followers']
 
-        
+
+class UserListSerializer(serializers.ModelSerializer):
+    followers_count = serializers.IntegerField(source='followers.count', read_only=True)
+    following_count = serializers.IntegerField(source='following.count', read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'bio', 'profile_picture', 'followers_count', 'following_count']

@@ -8,7 +8,8 @@ class User(AbstractUser):
     password = models.CharField(max_length=128, default='')
     bio = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
-    followers = models.ManyToManyField('self',related_name='following' , symmetrical=False, blank=True)
+    
+    following = models.ManyToManyField('self', related_name='followers_set', symmetrical=False, blank=True)
 
    
     def __str__(self):
