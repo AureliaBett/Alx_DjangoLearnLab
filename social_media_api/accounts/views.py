@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.generics import GenericAPIView
 from rest_framework.authentication import TokenAuthentication
 from .models import User as CustomUser
-
+from notifications.models import Notification
 User = get_user_model()
 
 class RegisterView(CreateAPIView):
@@ -55,7 +55,17 @@ class FollowUserView(generics.GenericAPIView):
             return Response({"error": "You cannot follow yourself"}, status=status.HTTP_400_BAD_REQUEST)
         request.user.following.add(target_user)
         return Response({"message": f"You are now following {target_user.username}"}, status=status.HTTP_200_OK)
+        
+        request.user.following.add(target_user)
 
+        # Create notification for the followed user
+        Notification.objects.create(
+            recipient=target_user,
+            actor=request.user,
+            verb="followed"
+        )
+
+        return Response({"message": f"You are now following {target_user.username}"}, status=200)
 
 class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
